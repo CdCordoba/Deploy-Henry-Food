@@ -60,7 +60,7 @@ router.delete("/delete/:id", async (req, res, next) => {
       Recipe.destroy({
         where: { id: id },
       });
-      res.send(id);
+      res.send("Deleted");
     }
   } catch (err) {
     next(err);
