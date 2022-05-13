@@ -3,9 +3,9 @@ const { Sequelize } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
-const { DB_URL, API_KEY } = process.env;
+const { DATABASE_URL, API_KEY } = process.env;
 
-const sequelize = new Sequelize(DB_URL, {
+const sequelize = new Sequelize(DATABASE_URL, {
   logging: false, // set to console.log to see the raw SQL queries
   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
 });
