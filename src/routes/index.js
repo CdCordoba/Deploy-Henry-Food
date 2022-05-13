@@ -34,7 +34,7 @@ router.post("/recipe", async (req, res, next) => {
         recipe.addDietType(diet);
       });
 
-    res.status(201).send("Created");
+    res.status(201).send(recipe);
   } catch (error) {
     next(error);
   }

@@ -51,6 +51,54 @@ router.get("/:idRecipe", async (req, res, next) => {
   }
 });
 
+router.put("/update/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    let { title, summary, score, healthScore, steps, image, dietTypes } =
+      req.body;
+    if (typeof id === "number") {
+      res.send("Can't update this recipe");
+    } else if (typeof id === "string") {
+      Recipe.update(
+        {
+          title,
+          summary,
+          score,
+          healthScore,
+          steps,
+          image,
+        },
+        {
+          where: { id: id },
+        }
+      );
+      if (dietTypes.length) {
+        let arr = [];
+        var recip = await Recipe.findOne({
+          where: {
+            id: id,
+          },
+        });
+        for (let i = 0; i < dietTypes.length; i++) {
+          const diet = await DietType.findOne({
+            where: { name: dietTypes[i] },
+          });
+          arr.push(diet);
+        }
+        await recip.setDietTypes(arr[0]);
+        if (arr[1]) {
+          for (let i = 1; i < arr.length; i++) {
+            await recip.addDietTypes(arr[i]);
+          }
+        }
+      }
+      res.send(recip);
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.delete("/delete/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
